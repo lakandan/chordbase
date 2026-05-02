@@ -1,0 +1,16 @@
+[
+  {
+    "id": "song_1",
+    "title": "Wonderwall",
+    "artist": "Oasis",
+    "tags": ["90s", "Britpop", "Acoustic"],
+    "chords": "Capo 2\n\nEm7 G Dsus4 A7sus4\nToday is gonna be the day that they're gonna throw it back to you"
+  },
+  {
+    "id": "song_2",
+    "title": "Hallelujah",
+    "artist": "Jeff Buckley",
+    "tags": ["Acoustic", "Ballad", "Fingerpicking"],
+    "chords": "C Am C Am\nI heard there was a secret chord\nC Am\nThat David played and it pleased the Lord\nF G C G\nBut you don't really care for music, do you?"
+  }
+]

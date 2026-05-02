@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f172a">
+  <title>ChordBase | Premium Cloud Chords</title>
+  
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  
+  <header class="app-header">
+    <div class="header-content">
+      <h1 class="logo">🎵 ChordBase</h1>
+      <div class="header-actions">
+        <button id="btn-login" class="btn btn-outline">Login</button>
+        <button id="btn-logout" class="btn btn-outline hidden">Logout</button>
+        <button id="btn-install" class="btn btn-secondary hidden">Install App</button>
+        <button id="btn-add-song" class="btn btn-primary hidden">+ Add Song</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    
+    <!-- Auth View -->
+    <section id="view-auth" class="view active">
+      <div class="auth-container" style="text-align: center; padding: 4rem 1rem;">
+        <h2 style="font-size: 2rem; margin-bottom: 1rem;">Welcome to ChordBase</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Log in to access your personal chord database.</p>
+        <button id="btn-google-login" class="btn btn-primary" style="font-size: 1.1rem; padding: 0.8rem 2rem;">Log In with Google</button>
+      </div>
+    </section>
+
+    <!-- Song List View -->
+    <section id="view-song-list" class="view">
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search songs or tags...">
+      </div>
+      <div id="song-grid" class="song-grid">
+        <!-- Song cards injected here via JS -->
+      </div>
+    </section>
+
+    <!-- Song Detail View -->
+    <section id="view-song-detail" class="view">
+      <button id="btn-back" class="btn btn-icon">← Back to library</button>
+      
+      <div class="song-header">
+        <h2 id="detail-title">Song Title</h2>
+        <p id="detail-artist">Artist Name</p>
+        <div id="detail-tags" class="tag-container">
+          <!-- Tags injected here -->
+        </div>
+        <button id="btn-edit-tags" class="btn btn-sm btn-outline">Edit Tags</button>
+      </div>
+
+      <div class="controls-bar">
+        <div class="transpose-controls">
+          <button id="btn-trans-down" class="btn btn-circle">-</button>
+          <span id="transpose-label">Key: Original</span>
+          <button id="btn-trans-up" class="btn btn-circle">+</button>
+        </div>
+        <div class="simplify-controls">
+          <label class="toggle">
+            <input type="checkbox" id="toggle-simplify">
+            <span class="slider"></span>
+          </label>
+          <span>Simplify Chords</span>
+        </div>
+      </div>
+
+      <div id="chord-sheet" class="chord-sheet">
+        <!-- Parsed chords and lyrics injected here -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modals -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <!-- Tag Editor Modal -->
+    <div id="modal-tags" class="modal hidden">
+      <h3>Edit Tags</h3>
+      <input type="text" id="new-tag-input" placeholder="Add a new tag...">
+      <div id="modal-tag-list" class="tag-container modal-tags"></div>
+      <div class="modal-actions">
+        <button id="btn-close-tags" class="btn btn-primary">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/db.js" type="module"></script>
+  <script src="/js/chords.js" type="module"></script>
+  <script src="/js/app.js" type="module"></script>
+</body>
+</html>
