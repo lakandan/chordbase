@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Guitar Chord Base</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#121212">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar glass-panel no-print">
+            <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2><i class="fa-solid fa-guitar"></i> ChordBase</h2>
+                <button class="icon-btn" id="btn-settings-sidebar" title="Settings" style="width: 35px; height: 35px;"><i class="fa-solid fa-cog"></i></button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-tab="songs"><i class="fa-solid fa-music"></i> All Songs</button>
+                <button class="nav-btn" data-tab="playlists"><i class="fa-solid fa-list"></i> Playlists</button>
+            </nav>
+
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search songs...">
+                <i class="fa-solid fa-search search-icon"></i>
+            </div>
+            
+            <div class="tab-content active" id="tab-songs">
+                <ul class="item-list" id="song-list">
+                    <!-- Songs dynamically injected here -->
+                </ul>
+                <button class="btn primary-btn add-btn" id="new-song-btn"><i class="fa-solid fa-plus"></i> Add Song</button>
+            </div>
+            
+            <div class="tab-content" id="tab-playlists">
+                <ul class="item-list" id="playlist-list">
+                    <!-- Playlists dynamically injected here -->
+                </ul>
+                <button class="btn primary-btn add-btn" id="new-playlist-btn"><i class="fa-solid fa-folder-plus"></i> New Playlist</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state">
+                <i class="fa-solid fa-guitar fa-4x mb-3"></i>
+                <h2>Welcome to ChordBase</h2>
+                <p>Select a song or add a new one to start playing.</p>
+            </div>
+
+            <!-- Song View -->
+            <div class="song-view" id="song-view" style="display: none;">
+                <div class="song-header no-print">
+                    <div class="song-title-group">
+                        <h1 id="view-title">Song Title</h1>
+                        <h3 id="view-artist">Artist Name</h3>
+                        <div class="tags-container" id="view-tags"></div>
+                    </div>
+                    <div class="song-actions">
+                        <button class="icon-btn" id="btn-edit" title="Edit Song"><i class="fa-solid fa-pen"></i></button>
+                        <button class="icon-btn" id="btn-print" title="Export PDF"><i class="fa-solid fa-file-pdf"></i></button>
+                        <button class="icon-btn danger" id="btn-delete" title="Delete Song"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+
+                <!-- Print Title (Only visible when printing) -->
+                <div class="print-header only-print">
+                    <h1 id="print-title">Song Title</h1>
+                    <h3 id="print-artist">Artist Name</h3>
+                </div>
+
+                <div class="controls-bar glass-panel no-print">
+                    <div class="control-group">
+                        <label>Transpose</label>
+                        <div class="stepper">
+                            <button id="trans-down" class="step-btn"><i class="fa-solid fa-minus"></i></button>
+                            <span id="trans-val" class="step-val">0</span>
+                            <button id="trans-up" class="step-btn"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="toggle-container">
+                            Simplify Chords
+                            <input type="checkbox" id="simplify-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Auto-scroll</label>
+                        <div class="scroll-controls">
+                            <button id="scroll-toggle" class="btn icon-btn"><i class="fa-solid fa-play"></i></button>
+                            <input type="range" id="scroll-speed" min="1" max="10" value="3" title="Scroll Speed">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="song-content" id="song-content">
+                    <!-- Parsed lyrics and chords injected here -->
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div class="settings-view glass-panel" id="settings-view" style="display: none; padding: 2rem; max-width: 900px; margin: 2rem auto; border-radius: 1rem;">
+                <h2 class="mb-3">Display Settings</h2>
+                <div class="settings-group">
+                    <label>Theme Color</label>
+                    <div class="theme-picker">
+                        <button class="theme-btn" data-theme="dark" style="background: #121212; border: 2px solid var(--primary)"></button>
+                        <button class="theme-btn" data-theme="light" style="background: #f5f5f5;"></button>
+                        <button class="theme-btn" data-theme="blue" style="background: #0f172a;"></button>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <label>Font Size</label>
+                    <input type="range" id="font-size-slider" min="12" max="24" value="16">
+                    <span id="font-size-display">16px</span>
+                </div>
+                <div class="settings-group">
+                    <button class="btn secondary-btn full-width" id="btn-fullscreen">
+                        <i class="fa-solid fa-expand"></i> Toggle Fullscreen
+                    </button>
+                </div>
+                
+                <hr style="margin: 2rem 0; border-color: var(--border);">
+                
+                <div class="settings-group">
+                    <h3 class="mb-3">Supabase Configuration</h3>
+                    <p class="text-small mb-3">Enter your Supabase URL and Anon Key below to enable cloud sync. If left empty, changes won't sync.</p>
+                    <div class="form-group mb-3">
+                        <label>Supabase Project URL</label>
+                        <input type="text" id="supabase-url" placeholder="https://xxxx.supabase.co">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Anon Key</label>
+                        <textarea id="supabase-key" rows="3" placeholder="eyJhb..."></textarea>
+                    </div>
+                    <button class="btn primary-btn mt-2" id="save-supabase-btn">Apply Config & Reload</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Song Modal -->
+    <div class="modal-overlay" id="edit-modal" style="display: none;">
+        <div class="modal glass-panel">
+            <div class="modal-header">
+                <h2 id="edit-modal-title">Add/Edit Song</h2>
+                <button class="close-btn" data-close="edit-modal"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="modal-body form-grid">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="edit-title" placeholder="Song Title">
+                </div>
+                <div class="form-group">
+                    <label>Artist</label>
+                    <input type="text" id="edit-artist" placeholder="Artist Name">
+                </div>
+                <div class="form-group full-width">
+                    <label>Tags (comma separated)</label>
+                    <input type="text" id="edit-tags" placeholder="e.g. acoustic, pop, 90s">
+                </div>
+                <div class="form-group full-width search-online-bar">
+                    <button class="btn secondary-btn" id="btn-search-online">
+                        <i class="fa-brands fa-google"></i> Search Chords Online
+                    </button>
+                    <small>Opens a new tab to find chords. Copy and paste them below.</small>
+                </div>
+                <div class="form-group full-width">
+                    <label>Content (Format: Use [C] for chords inline with lyrics)</label>
+                    <textarea id="edit-content" rows="12" placeholder="To[C]day is gonna be the [Em]day..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary-btn" data-close="edit-modal">Cancel</button>
+                <button class="btn primary-btn" id="save-song-btn">Save Song</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <script type="module" src="/app.js?v=3"></script>
+</body>
+</html>
